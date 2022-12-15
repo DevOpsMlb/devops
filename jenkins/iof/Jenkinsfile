@@ -71,7 +71,7 @@ def runInOntologyPublisherContainer(Map config, Closure body) {
 
       def containerName = "${env.JOB_NAME}-${env.NODE_NAME}-${env.EXECUTOR_NUMBER}-${config.shortStageName}".replaceAll(/[^a-zA-Z0-9_.-]/, "_")
 
-      node('docker') {
+      node('nist-master') {
         echo "Running in stage \"${config.longStageName}\" now"
         sh "rm -rf input"
         unstash "input"
@@ -176,7 +176,7 @@ def publish(String[] derivedProducts) {
   }
 }
 
-node {
+node('nist-master') {
   ansiColor('xterm') {
     stage('Setup') {
       dir("input/${env.ONTPUB_FAMILY}") {
@@ -215,7 +215,7 @@ node {
     // will be bad because we would lose all previously published versions
     //
     stage('Publish') {
-      node('edmc-master') {
+      node('nist-masterr') {
         // setting variables
         script {
 	  // Replace all slashes in a branch name with dashes so that we don't mess up the URLs for the ontologies
