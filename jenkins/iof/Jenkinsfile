@@ -192,8 +192,8 @@ node('nist-master') {
     hygiene().call()
 
     // temporary exit
-    // currentBuild.result = 'SUCCESS'
-    // return
+    currentBuild.result = 'SUCCESS'
+    return
     // temporary exit - END
 
     product('ontology').call()
