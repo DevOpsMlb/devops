@@ -205,7 +205,10 @@ node('nist-master') {
       parallel(parallelStages)
     }
 
-    publish(derivedProducts).call()
+    //Failed stage "Build Final Content": hudson.AbortException: script returned exit code 1
+    //publisher/publish.sh publish 
+    //It was commented beacuse it caused error and it needs to be skipped to test futrther part of pipeline
+    //publish(derivedProducts).call()
 
     //
     // Run the publish on the master jenkins agent by just copying all the generated artifacts right into the workspace
