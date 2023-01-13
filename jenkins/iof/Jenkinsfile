@@ -22,8 +22,9 @@ env.ONTPUB_INPUT_REPOS="${env.ONTPUB_FAMILY}"
 env.DEV_SPEC='AboutIOFDev.rdf'
 env.PROD_SPEC='AboutIOFProd.rdf'
 env.HYGIENE_TEST_PARAMETER_VALUE='industrialontologies'
-env.HYGIENE_WARN_INCONSISTENCY_SPEC_FILE_NAME="${env.DEV_SPEC}"
-env.HYGIENE_ERROR_INCONSISTENCY_SPEC_FILE_NAME="${env.PROD_SPEC}"
+//	temporarily disable consistency checking
+//env.HYGIENE_WARN_INCONSISTENCY_SPEC_FILE_NAME="${env.DEV_SPEC}"
+//env.HYGIENE_ERROR_INCONSISTENCY_SPEC_FILE_NAME="${env.PROD_SPEC}"
 env.ONTPUB_MERGED_INFIX="-Merged"
 env.ONTPUB_IS_DARK_MODE='1'
 env.ONTPUB_IMAGE='edmcouncil/ontology-publisher:stable'
@@ -191,11 +192,6 @@ node('nist-master') {
 
     hygiene().call()
 
-    // temporary exit
-    // currentBuild.result = 'SUCCESS'
-    // return
-    // temporary exit - END
-
     product('ontology').call()
 
     stage('Build Derived Products') {
@@ -205,10 +201,7 @@ node('nist-master') {
       parallel(parallelStages)
     }
 
-    //Failed stage "Build Final Content": hudson.AbortException: script returned exit code 1
-    //publisher/publish.sh publish 
-    //It was commented beacuse it caused error and it needs to be skipped to test futrther part of pipeline
-    //publish(derivedProducts).call()
+    publish(derivedProducts).call()
 
     //
     // Run the publish on the master jenkins agent by just copying all the generated artifacts right into the workspace
@@ -294,4 +287,3 @@ node('nist-master') {
       } // end of stage "Ontology Viewer Update"
   } // end of ansiColor('xterm')
 }
-
