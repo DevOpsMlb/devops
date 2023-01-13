@@ -72,7 +72,7 @@ def runInOntologyPublisherContainer(Map config, Closure body) {
 
       def containerName = "${env.JOB_NAME}-${env.NODE_NAME}-${env.EXECUTOR_NUMBER}-${config.shortStageName}".replaceAll(/[^a-zA-Z0-9_.-]/, "_")
 
-      node('nist-master') {
+      node('docker') {
         echo "Running in stage \"${config.longStageName}\" now"
         sh "rm -rf input"
         unstash "input"
@@ -177,7 +177,7 @@ def publish(String[] derivedProducts) {
   }
 }
 
-node('nist-master') {
+node {
   ansiColor('xterm') {
     stage('Setup') {
       dir("input/${env.ONTPUB_FAMILY}") {
@@ -252,7 +252,7 @@ node('nist-master') {
     } // end of stage "Publish"
       // FIBO-125
       stage('Ontology Viewer Update') {
-        node('nist-master') {
+        node('edmc-master') {
           // setting variables
           script {
 	    // Replace all slashes in a branch name with dashes so that we don't mess up the URLs for the ontologies
